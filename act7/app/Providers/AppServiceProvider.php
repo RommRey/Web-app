@@ -3,26 +3,20 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        //
+        // Forzar a Laravel a generar todas las URLs en HTTPS y aceptar el proxy de Codespaces
+        if (isset($_SERVER['HTTP_X_FORWARDED_HOST']) || config('app.env') === 'local') {
+            URL::forceScheme('https');
+        }
     }
 }
