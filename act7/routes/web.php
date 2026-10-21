@@ -12,8 +12,13 @@ Route::get('/', function () {
 Auth::routes();
 
 // 2 y 4. Ruta protegida del Dashboard (solo usuarios autenticados)
+use App\Models\Order;
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // Obtiene las órdenes del usuario que inició sesión
+    $orders = Order::where('user_id', Auth::id())->get();
+
+    return view('dashboard', compact('orders'));
 })->middleware('auth')->name('dashboard');
 
 // Redirección opcional de /home a /dashboard
